@@ -43,7 +43,7 @@ fn size_reduce(b: &Array2<Rational>, mu: &Mu) -> (Array2<Rational>, Mu) {
       let s = vector::sub(
         new_b.row(k),
         b.row(j)
-          .map(|x| x * Rational::from(mu[(k, j)].round_ref()))
+          .map(|x| x * (Rational::from((-1, 2)) + &mu[(k, j)]).ceil())
           .view(),
       );
       new_b.row_mut(k).assign(&s);
@@ -96,8 +96,8 @@ pub fn deep_lll(
         eprint!("=");
       }
 
-      if c >= Rational::from(&delta * &v[i]) {
-        c -= Rational::from((&mu[(k, i)]).pow(2)) * &v[i];
+      if c >= delta.clone() * &v[i] {
+        c -= mu[(k, i)].clone().pow(2) * &v[i];
       } else {
         hist.push((i, k));
         swap(b.view_mut(), i, k);
@@ -173,13 +173,13 @@ mod tests {
       array![
         [rat!(2), rat!(-2), rat!(-2)],
         [rat!(0), rat!(3), rat!(-2)],
-        [rat!(-3), rat!(-2), rat!(0)]
+        [rat!(-3), rat!(1), rat!(-2)]
       ]
     );
     assert_eq!(v2, array![rat!(12), rat!(38, 3), rat!(19, 2)]);
     assert_eq!(mu2[(1, 0)], rat!(-1, 6));
-    assert_eq!(mu2[(2, 0)], rat!(-1, 6));
-    assert_eq!(mu2[(2, 1)], rat!(-1, 2));
+    assert_eq!(mu2[(2, 0)], rat!(-1, 3));
+    assert_eq!(mu2[(2, 1)], rat!(1, 2));
     assert_eq!(&hist, &[(0, 2)]);
   }
 }

@@ -15,7 +15,7 @@ macro_rules! measure {
       let start = Instant::now();
       let result = $x;
       let end = start.elapsed();
-      println!("\n{}: {}.{:03} sec", $str, end.as_secs(), end.subsec_nanos() / 1_000_000);
+      println!("{}: {}.{:03} sec", $str, end.as_secs(), end.subsec_nanos() / 1_000_000);
       result
     }
   };
@@ -27,6 +27,6 @@ fn main() {
   let b = matrix_parse(path);
 
   let (new_b, v, mu, hist, cnt) =
-    measure!(path_str, deep_lll(b.slice(s![0..15, 0..15]).to_owned(), 1.into(), true, 100));
+    measure!(path_str, deep_lll(b.slice(s![0..30, 0..30]).to_owned(), 1.into(), true, 100));
   println!("b: {:?}\nv_norms: {:?}\n{:?}\n(hist.len, cnt): {:?}", new_b, v, mu, (hist.len(), cnt));
 }
