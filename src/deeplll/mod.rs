@@ -93,7 +93,7 @@ pub fn deep_lll(
     for i in 0..k {
       cnt += 1;
       if verbose && cnt % verbose_count == 0 {
-        print!("=");
+        eprint!("=");
       }
 
       if c >= Rational::from(&delta * &v[i]) {
