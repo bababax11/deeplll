@@ -2,9 +2,9 @@
 //   fmt,
 //   ops::{self, Index, IndexMut},
 // };
-use std::ops;
-use rug::Rational;
 use ndarray::prelude::*;
+use rug::Rational;
+use std::ops;
 
 pub fn dot(a: ArrayView1<Rational>, b: ArrayView1<Rational>) -> Rational {
   let mut result = Rational::default();
@@ -21,9 +21,7 @@ pub fn norm_squared(a: ArrayView1<Rational>) -> Rational {
 
 pub fn sub(a: ArrayView1<Rational>, b: ArrayView1<Rational>) -> Array1<Rational> {
   assert_eq!(a.len(), b.len());
-  let mut result = Array::from(
-    vec![Rational::default(); a.len()]
-  );
+  let mut result = Array::from(vec![Rational::default(); a.len()]);
   for i in 0..a.len() {
     result[i] = a[i].clone() - &b[i];
   }
@@ -65,7 +63,7 @@ trait Coefficient:
 //   fn dot(&self, other: &Self) -> Self::Output;
 // }
 
-// impl<T> Dot for Vector<T> 
+// impl<T> Dot for Vector<T>
 // where T: Coefficient,
 // {
 //   type Output = T;
@@ -77,7 +75,6 @@ trait Coefficient:
 //     result
 //   }
 // }
-
 
 // impl<T> Index<usize> for Vector<T> {
 //   type Output = T;
