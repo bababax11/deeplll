@@ -115,6 +115,86 @@ pub fn deep_lll(
   }
   (b, v, mu, hist, cnt)
 }
+
+fn max_sjk(v: &Array1<Rational>, mu: &Mu, k: usize) -> (usize, Rational) {
+  let mut sjk = vec![Rational::new(); k];
+  let mut before = Rational::new();
+  let mut pjbk = v[k].clone();
+  for (e, j) in (0..k).rev().enumerate() {
+    let tmp = mu[(k, j)].clone().pow(2) * &v[j];
+    pjbk += &tmp;
+    before += tmp * (v[j].clone() / &pjbk - 1);
+    sjk[e] = before.clone();
+  }
+  let (e_, max_val) = argmax(&sjk);
+  (k - e_ - 1, max_val)
+}
+
+fn argmax<T: PartialOrd + Clone>(xs: &[T]) -> (usize, T) {
+  if xs.is_empty() {
+    panic!();
+  } else if xs.len() == 1 {
+    (0, xs[0].clone())
+  } else {
+    let mut max_val = &xs[0];
+    let mut max_ix = 0;
+    for (i, x) in xs.iter().enumerate().skip(1) {
+      if x > max_val {
+        max_val = x;
+        max_ix = i;
+      }
+    }
+    (max_ix, max_val.clone())
+  }
+}
+#[inline]
+fn ss(v: &Array1<Rational>) -> Rational {
+  v.fold(Rational::new(), |sum, e| sum + e)
+}
+
+fn s2_lll(
+  mut b: Array2<Rational>,
+  delta: Rational,
+  verbose: bool,
+  verbose_count: usize,
+) -> (
+  Array2<Rational>,
+  Array1<Rational>,
+  Mu,
+  Vec<(usize, usize, Rational)>,
+  usize,
+) {
+  let n = b.nrows();
+  let mut hist = Vec::with_capacity(verbose_count * 100);
+  let mut k = 1;
+  let (mut v, mut mu) = orthogonize(&b);
+
+  let mut cnt = 0;
+
+  while k < n {
+    cnt += 1;
+    if verbose && cnt % verbose_count == 0 {
+      eprint!("=");
+    }
+    let (_b, _mu) = size_reduce(&b, &mu);
+    b = _b;
+    mu = _mu;
+
+    let (i, s) = max_sjk(&v, &mu, k);
+    if s <= (Rational::from(1) - &delta) * ss(&v) {
+      k += 1;
+    } else {
+      hist.push((i, k, ss(&v)));
+      swap(b.view_mut(), i, k);
+      let (_v, _mu) = orthogonize(&b);
+      v = _v;
+      mu = _mu;
+      k = usize::max(i, 1);
+    }
+  }
+  (b, v, mu, hist, cnt)
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -181,5 +261,26 @@ mod tests {
     assert_eq!(mu2[(2, 0)], rat!(-1, 3));
     assert_eq!(mu2[(2, 1)], rat!(1, 2));
     assert_eq!(&hist, &[(0, 2)]);
+  }
+  #[test]
+  fn s2_lll_test() {
+    let b = array![
+      [rat!(3), rat!(1), rat!(-1)],
+      [rat!(0), rat!(-1), rat!(-4)],
+      [rat!(1), rat!(-1), rat!(2)]
+    ];
+    let (b2, v2, mu2, hist, _) = s2_lll(b, rat!(1), false, 1);
+    assert_eq!(b2, array![
+      [rat!(1), rat!(-1), rat!(2)],
+      [rat!(1), rat!(-2), rat!(-2)],
+      [rat!(3), rat!(1), rat!(-1)]
+    ]);
+    assert_eq!(v2, array![
+      rat!(6), rat!(53, 6), rat!(529, 53) 
+    ]);
+    assert_eq!(mu2[(1, 0)], rat!(-1, 6));
+    assert_eq!(mu2[(2, 0)], rat!(0));
+    assert_eq!(mu2[(2, 1)], rat!(18, 53));
+    assert_eq!(&hist, &[(1, 2, rat!(59041, 1958)), (0, 2, rat!(1651, 66)), (0, 2, rat!(2239, 90))]);
   }
 }
