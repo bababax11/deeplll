@@ -60,7 +60,7 @@ fn swap(mut b: ArrayViewMut2<Rational>, i: usize, k: usize) {
   b.slice_mut(s![i + 1, ..]).assign(&row_i);
 }
 
-fn deep_lll(mut b: Array2<Rational>, delta: Rational, verbose: bool, verbose_count: usize) -> (Array2<Rational>, Array1<Rational>, Mu, Vec<(usize, usize)>, usize) {
+pub fn deep_lll(mut b: Array2<Rational>, delta: Rational, verbose: bool, verbose_count: usize) -> (Array2<Rational>, Array1<Rational>, Mu, Vec<(usize, usize)>, usize) {
   let n = b.nrows();
   let mut hist = Vec::with_capacity(verbose_count * 5);
   let mut k = 1;

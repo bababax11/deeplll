@@ -3,12 +3,12 @@ use std::io;
 use std::io::prelude::*;
 use std::path::Path;
 use regex::Regex;
-use rug::{Rational, Integer};
+use rug::{Rational};
 use ndarray::prelude::*;
 
 // A simple implementation of `% cat path`
 // `% cat path`のシンプルな実装
-fn cat(path: &Path) -> io::Result<String> {
+pub fn cat(path: &Path) -> io::Result<String> {
     let mut f = File::open(path)?;
     let mut s = String::new();
     match f.read_to_string(&mut s) {
@@ -17,7 +17,7 @@ fn cat(path: &Path) -> io::Result<String> {
     }
 }
 
-fn matrix_parse(path: &Path) -> Array2<Rational> {
+pub fn matrix_parse(path: &Path) -> Array2<Rational> {
   let mut nrows = 0;
   let s = cat(&path).unwrap();
   let re_line = Regex::new(r"\[[\s\d]+\]").unwrap();

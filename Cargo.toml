@@ -10,3 +10,8 @@ edition = "2018"
 rug = "1.11.0"
 ndarray = "0.14.0"
 regex = "1.4.3"
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = true
