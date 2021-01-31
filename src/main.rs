@@ -28,5 +28,5 @@ fn main() {
 
   let (new_b, v, mu, hist, cnt) =
     measure!(path_str, deep_lll(b.slice(s![0..30, 0..30]).to_owned(), 1.into(), true, 100));
-  println!("b: {:?}\nv_norms: {:?}\n{:?}\n(hist.len, cnt): {:?}", new_b, v, mu, (hist.len(), cnt));
+  println!("b: {:?}\nv_norms: {:?}\n{:?}\n(hist.len, cnt): {:?}\n{:?}", new_b, v, mu, (hist.len(), cnt), hist);
 }

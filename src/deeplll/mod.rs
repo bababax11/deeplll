@@ -77,7 +77,7 @@ pub fn deep_lll(
   usize,
 ) {
   let n = b.nrows();
-  let mut hist = Vec::with_capacity(verbose_count * 5);
+  let mut hist = Vec::with_capacity(verbose_count * 100);
   let mut k = 1;
   let (mut v, mut mu) = orthogonize(&b);
 
