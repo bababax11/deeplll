@@ -25,10 +25,10 @@ fn orthogonize(b: &Array2<Rational>) -> (Array1<Rational>, Mu) {
   for i in 0..n {
     for j in 0..i {
       let tmp = dot(b.row(i), tmp_v.row(j)) / norm_squared(tmp_v.row(j));
-      mu[(i, j)] = tmp.clone();
       let s = vector::sub(tmp_v.row(i),
        tmp_v.row(j).map(|x| Rational::from(&tmp * x)).view());
       tmp_v.row_mut(i).assign(&s);
+      mu[(i, j)] = tmp;
     }
   }
   let v = make_v(tmp_v);

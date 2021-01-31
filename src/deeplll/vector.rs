@@ -14,12 +14,9 @@ pub fn dot(a: ArrayView1<Rational>, b: ArrayView1<Rational>) -> Rational {
   result
 }
 
+#[inline]
 pub fn norm_squared(a: ArrayView1<Rational>) -> Rational {
-  let mut result = Rational::default();
-  for i in 0..a.len() {
-    result += &(a[i].clone() * &a[i]);
-  }
-  result
+  dot(a, a)
 }
 
 pub fn sub(a: ArrayView1<Rational>, b: ArrayView1<Rational>) -> Array1<Rational> {
