@@ -42,7 +42,7 @@ mod tests {
   #[test]
   fn matrix_parse_test() {
     let path = Path::new("matrices/svp/svpchallengedim40seed0.txt");
-    let mat = matrix_parse(&path);
+    let mat = matrix_parse(path);
     dbg!(mat);
   }
 }
