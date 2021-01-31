@@ -49,15 +49,16 @@ fn size_reduce(b: &Array2<Rational>, mu: &Mu) -> (Array2<Rational>, Mu) {
   (new_b, new_mu)
 }
 
-fn swap(b: ArrayView2<Rational>, i: usize, k: usize) -> Array2<Rational> {
-  let mut new_b = b.to_owned();
-  new_b.slice_mut(s![i, ..]).assign(&b.slice(s![k, ..]).to_owned());
-  for l in i..k {
-    new_b.slice_mut(s![l + 1, ..]).assign(&b.slice(s![l, ..]).to_owned());
+fn swap(mut b: ArrayViewMut2<Rational>, i: usize, k: usize) {
+  let row_i = b.slice(s![i, ..]).to_owned();
+  let tmp = b.slice(s![k, ..]).to_owned();
+  b.slice_mut(s![i, ..]).assign(&tmp);
+  for l in ((i+1)..k).rev() {
+    let tmp = b.slice(s![l, ..]).to_owned();
+    b.slice_mut(s![l + 1, ..]).assign(&tmp);
   }
-  new_b
+  b.slice_mut(s![i + 1, ..]).assign(&row_i);
 }
-
 
 fn deep_lll(mut b: Array2<Rational>, delta: Rational, verbose: bool, verbose_count: usize) -> (Array2<Rational>, Array1<Rational>, Mu, Vec<(usize, usize)>, usize) {
   let n = b.nrows();
@@ -85,7 +86,7 @@ fn deep_lll(mut b: Array2<Rational>, delta: Rational, verbose: bool, verbose_cou
         c -= Rational::from((&mu[(k, i)]).pow(2)) * &v[i];
       } else {
         hist.push((i, k));
-        b = swap(b.view(), i, k);
+        swap(b.view_mut(), i, k);
         let (_v, _mu) = orthogonize(&b);
         v = _v;
         mu = _mu;
