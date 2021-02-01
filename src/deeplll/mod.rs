@@ -148,11 +148,11 @@ fn argmax<T: PartialOrd + Clone>(xs: &[T]) -> (usize, T) {
   }
 }
 #[inline]
-fn ss(v: &Array1<Rational>) -> Rational {
+pub fn ss(v: &Array1<Rational>) -> Rational {
   v.fold(Rational::new(), |sum, e| sum + e)
 }
 
-fn s2_lll(
+pub fn s2_lll(
   mut b: Array2<Rational>,
   delta: Rational,
   verbose: bool,

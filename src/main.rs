@@ -1,7 +1,7 @@
 mod deeplll;
 mod parse;
 
-use deeplll::deep_lll;
+use deeplll::{deep_lll, s2_lll};
 use parse::matrix_parse;
 
 use ndarray::prelude::*;
