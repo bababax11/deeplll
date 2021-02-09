@@ -1,4 +1,4 @@
-mod vector;
+pub mod vector;
 use vector::{dot, norm_squared};
 // mod matrix;
 // use matrix::Matrix;
