@@ -2,7 +2,7 @@ mod vector;
 use vector::{dot, norm_squared};
 // mod matrix;
 // use matrix::Matrix;
-mod mu;
+pub mod mu;
 use mu::Mu;
 use ndarray::prelude::*;
 use rug::{ops::Pow, Rational};
