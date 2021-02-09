@@ -9,7 +9,7 @@ use std::ops;
 pub fn dot(a: ArrayView1<Rational>, b: ArrayView1<Rational>) -> Rational {
   let mut result = Rational::default();
   for i in 0..a.len() {
-    result += &(a[i].clone() * &b[i]);
+    result += a[i].clone() * &b[i];
   }
   result
 }
@@ -23,11 +23,10 @@ pub fn dot2(a: ArrayView2<Rational>, b: ArrayView2<Rational>) -> Array2<Rational
 
   for i in 0..l {
     for k in 0..n {
-      let mut sum = Rational::new();
+      let sum = &mut result[[i, k]];
       for j in 0..m {
-        sum += a[[i, j]].clone() * &b[[j, k]];
+        *sum += a[[i, j]].clone() * &b[[j, k]];
       }
-      result[[i, k]] = sum;
     }
   }
   result
