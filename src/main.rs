@@ -4,6 +4,7 @@ mod gen_mat;
 
 use deeplll::{deep_lll, lll, pot_lll, s2_lll, mu::Mu};
 use parse::matrix_parse;
+use gen_mat::gen_mat;
 
 use ndarray::prelude::*;
 use rug::Rational;
@@ -25,11 +26,21 @@ macro_rules! measure {
   };
 }
 
-fn experiment_mat(mat_path_str: &str) {
+fn experiment_random(ndim: usize, seed: u64, cnt: usize) {
+  let b = gen_mat(ndim, seed, cnt);
+  let path_str_base = format!("ndim{}seed{}cnt{}", ndim, seed, cnt);
+  experiment_mat(b, &[ndim], &path_str_base);
+}
+
+fn experiment_svp(mat_path_str: &str) {
   let path = Path::new(mat_path_str);
   let b = matrix_parse(path);
-  for ndim in &[10, 15, 20, 25, 30] {
-    let path_str_base = mat_path_str.split("/").last().unwrap().split(".").next().unwrap();
+  let path_str_base = mat_path_str.split("/").last().unwrap().split(".").next().unwrap();
+  experiment_mat(b, &[10, 15, 20, 25, 30], path_str_base);
+}
+
+fn experiment_mat(b: Array2<Rational>, ndims: &[usize], path_str_base: &str) {
+  for ndim in ndims {
     for rat in &[Rational::from(1), Rational::from((99, 100))] {
 
       macro_rules! experiment {
@@ -68,6 +79,6 @@ fn experiment_unit<T: std::fmt::Debug>(b: ArrayView2<Rational>, result_path_str:
 fn main() {
   for i in 0..5 {
     let mat_path_str = format!("matrices/svp/svpchallengedim40seed{}.txt", i);
-    experiment_mat(&mat_path_str);
+    experiment_svp(&mat_path_str);
   }
 }
