@@ -10,6 +10,8 @@ edition = "2018"
 rug = "1.11.0"
 ndarray = "0.14.0"
 regex = "1.4.3"
+rand = "0.8.3"
+rand_xoshiro = "0.6.0"
 
 [profile.release]
 opt-level = 3

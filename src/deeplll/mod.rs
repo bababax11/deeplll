@@ -1,4 +1,4 @@
-mod vector;
+pub mod vector;
 use vector::{dot, norm_squared};
 // mod matrix;
 // use matrix::Matrix;
@@ -11,7 +11,7 @@ fn make_v(tmp_v: Array2<Rational>) -> Array1<Rational> {
   let n = tmp_v.nrows();
   let mut v = Array::from(vec![Rational::default(); n]);
   for i in 0..n {
-    v[i] = dot(tmp_v.row(i), tmp_v.row(i));
+    v[i] = norm_squared(tmp_v.row(i));
   }
   v
 }

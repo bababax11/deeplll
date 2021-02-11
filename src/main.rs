@@ -1,5 +1,6 @@
 mod deeplll;
 mod parse;
+mod gen_mat;
 
 use deeplll::{deep_lll, lll, pot_lll, s2_lll, mu::Mu};
 use parse::matrix_parse;
