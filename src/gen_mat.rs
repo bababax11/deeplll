@@ -1,7 +1,7 @@
 use rand::Rng;
 use ndarray::prelude::*;
 use rug::Rational;
-use crate::deeplll::vector::{add, determinant};
+use crate::deeplll::vector::add;
 
 pub fn gen_mat(ndim: usize, seed: u64, cnt: usize) -> Array2<Rational> {
   use rand::SeedableRng;
@@ -27,6 +27,7 @@ pub fn gen_mat(ndim: usize, seed: u64, cnt: usize) -> Array2<Rational> {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::deeplll::vector::determinant;
 
   #[test]
   fn gen_mat_test() {
