@@ -41,13 +41,14 @@ fn experiment_svp(mat_path_str: &str) {
 
 fn experiment_mat(b: Array2<Rational>, ndims: &[usize], path_str_base: &str) {
   for ndim in ndims {
+    let ndim = *ndim;
     for rat in &[Rational::from(1), Rational::from((99, 100))] {
 
       macro_rules! experiment {
         ($dir_name: expr, $f: expr) => {
-          let result_path_str = format!("results/{}/{}dim{}delta{}.txt", $dir_name, path_str_base, *ndim, rat.to_f32());
+          let result_path_str = format!("results/{}/{}dim{}delta{}.txt", $dir_name, path_str_base, ndim, rat.to_f32());
           eprintln!("\n{}", &result_path_str);
-          experiment_unit(b.slice(s![0..(*ndim), 0..(*ndim)]), &result_path_str, rat.to_owned(), $f).unwrap();
+          experiment_unit(b.slice(s![0..ndim, 0..ndim]), &result_path_str, rat.to_owned(), $f).unwrap();
         };
       }
 
