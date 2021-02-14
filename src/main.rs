@@ -40,8 +40,7 @@ fn experiment_svp(mat_path_str: &str) {
 }
 
 fn experiment_mat(b: Array2<Rational>, ndims: &[usize], path_str_base: &str) {
-  for ndim in ndims {
-    let ndim = *ndim;
+  for &ndim in ndims {
     for rat in &[Rational::from(1), Rational::from((99, 100))] {
 
       macro_rules! experiment {
@@ -84,8 +83,7 @@ fn main() {
   // }
   const CNT: usize = 1000;
 
-  for ndim in &[10, 15, 20, 25, 30, 35] {
-    let ndim = *ndim;
+  for &ndim in &[10, 15, 20, 25, 30, 35] {
     for seed in 0..5 {
       experiment_random(ndim, seed, CNT);
     }
