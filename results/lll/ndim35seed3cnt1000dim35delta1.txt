@@ -1,4 +1,4 @@
-results/lll/ndim35seed3cnt1000dim35delta1.txt: 3729.586 sec
+results/lll/ndim35seed3cnt1000dim35delta1.txt: 3570.157 sec
 b: [[0, 0, 0, 0, 0, ..., 1, 0, 0, 0, 0],
  [0, 0, 0, 0, 0, ..., 0, 0, 0, 0, 0],
  [0, 0, 0, 0, 0, ..., 0, 0, 0, 0, 0],

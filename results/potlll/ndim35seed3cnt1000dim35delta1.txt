@@ -1,4 +1,4 @@
-results/potlll/ndim35seed3cnt1000dim35delta1.txt: 3045.438 sec
+results/potlll/ndim35seed3cnt1000dim35delta1.txt: 2895.677 sec
 b: [[0, 0, 0, 0, 0, ..., -1, 0, 0, 0, 0],
  [0, 0, 0, 0, 0, ..., 0, 0, 0, 0, 0],
  [0, 0, 0, 0, 0, ..., 0, 0, 0, 0, 0],
