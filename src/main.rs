@@ -36,7 +36,7 @@ fn experiment_svp(mat_path_str: &str) {
   let path = Path::new(mat_path_str);
   let b = matrix_parse(path);
   let path_str_base = mat_path_str.split("/").last().unwrap().split(".").next().unwrap();
-  experiment_mat(b, &[10, 15, 20, 25, 30], path_str_base);
+  experiment_mat(b, &[35, 40], path_str_base);
 }
 
 fn experiment_mat(b: Array2<Rational>, ndims: &[usize], path_str_base: &str) {
@@ -51,7 +51,7 @@ fn experiment_mat(b: Array2<Rational>, ndims: &[usize], path_str_base: &str) {
         };
       }
 
-      experiment!("deeplll", deep_lll);
+      // experiment!("deeplll", deep_lll);
 
       experiment!("lll", lll);
 
@@ -77,15 +77,15 @@ fn experiment_unit<T: std::fmt::Debug>(b: ArrayView2<Rational>, result_path_str:
 }
 
 fn main() {
-  // for i in 0..5 {
-  //   let mat_path_str = format!("matrices/svp/svpchallengedim40seed{}.txt", i);
-  //   experiment_svp(&mat_path_str);
-  // }
+  for i in 0..5 {
+    let mat_path_str = format!("matrices/svp/svpchallengedim40seed{}.txt", i);
+    experiment_svp(&mat_path_str);
+  }
   const CNT: usize = 1000;
 
-  for &ndim in &[10, 15, 20, 25, 30, 35] {
-    for seed in 0..5 {
-      experiment_random(ndim, seed, CNT);
-    }
-  }
+  // for &ndim in &[10, 15, 20, 25, 30, 35] {
+  //   for seed in 0..5 {
+  //     experiment_random(ndim, seed, CNT);
+  //   }
+  // }
 }
