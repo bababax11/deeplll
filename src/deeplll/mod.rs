@@ -105,11 +105,41 @@ pub fn lll(
   (b, v, mu, hist, cnt)
 }
 
+pub trait LLLFn<T>:
+  Fn(Array2<Rational>, Rational, bool, usize) -> (
+    Array2<Rational>,
+    Array1<Rational>,
+    Mu,
+    Vec<T>,
+    usize,
+  )
+{}
+impl <S, T> LLLFn<T> for S where S: Fn(Array2<Rational>, Rational, bool, usize) -> (
+  Array2<Rational>,
+  Array1<Rational>,
+  Mu,
+  Vec<T>,
+  usize,
+) {}
+
+#[inline]
+pub fn deep_lll_all() -> impl LLLFn<(usize, usize)> {
+  let _deep_lll_all = |b, delta, verbose, verbose_count| deep_lll(b, delta, verbose, verbose_count, i32::MAX);
+  _deep_lll_all
+}
+
+#[inline]
+pub fn deep_lll_width(width: i32) -> impl LLLFn<(usize, usize)> {
+  move |b, delta, verbose, verbose_count| deep_lll(b, delta, verbose, verbose_count, width)
+}
+
+
 pub fn deep_lll(
   mut b: Array2<Rational>,
   delta: Rational,
   verbose: bool,
   verbose_count: usize,
+  width: i32
 ) -> (
   Array2<Rational>,
   Array1<Rational>,
@@ -117,6 +147,7 @@ pub fn deep_lll(
   Vec<(usize, usize)>,
   usize,
 ) {
+  assert!(width > 0);
   let n = b.nrows();
   let mut hist = Vec::with_capacity(verbose_count * 100);
   let mut k = 1;
@@ -131,7 +162,8 @@ pub fn deep_lll(
     let mut after_break = false;
     let mut c = norm_squared(b.row(k));
 
-    for i in 0..k {
+    use std::cmp::max;
+    for i in (max(0, k as i32 - width) as usize)..k {
       cnt += 1;
       if verbose && cnt % verbose_count == 0 {
         eprint!("=");

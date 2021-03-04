@@ -83,7 +83,6 @@ fn main() {
   }
   const CNT: usize = 1000;
 
-  // for &ndim in &[10, 15, 20, 25, 30, 35] {
   //   for seed in 0..5 {
   //     experiment_random(ndim, seed, CNT);
   //   }
