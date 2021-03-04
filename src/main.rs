@@ -46,7 +46,7 @@ fn experiment_svp(mat_path_str: &str) {
         .split(".")
         .next()
         .unwrap();
-    experiment_mat(b, &[35, 40], path_str_base);
+    experiment_mat(b, &NDIMS, path_str_base);
 }
 
 fn experiment_mat(b: Array2<Rational>, ndims: &[usize], path_str_base: &str) {
@@ -105,6 +105,8 @@ fn experiment_unit<T: std::fmt::Debug>(
     Ok(())
 }
 
+const NDIMS: [usize; _] = [10, 15, 20, 25, 30, 35, 40];
+
 fn main() {
     for i in 0..5 {
         let mat_path_str = format!("matrices/svp/svpchallengedim40seed{}.txt", i);
@@ -112,7 +114,7 @@ fn main() {
     }
     const CNT: usize = 1000;
 
-    for &ndim in &[10, 15, 20, 25, 30] {
+    for &ndim in &NDIMS {
       for seed in 0..5 {
         experiment_random(ndim, seed, CNT);
       }
