@@ -2,7 +2,7 @@ mod deeplll;
 mod gen_mat;
 mod parse;
 
-use deeplll::{deep_lll, lll, mu::Mu, pot_lll, s2_lll};
+use deeplll::{deep_lll_width, lll, mu::Mu, pot_lll, s2_lll, LLLFn};
 use gen_mat::gen_mat;
 use parse::matrix_parse;
 
@@ -72,13 +72,14 @@ fn experiment_mat(b: Array2<Rational>, ndims: &[usize], path_str_base: &str) {
                 };
             }
 
-            // experiment!("deeplll", deep_lll);
+            experiment!("deeplll05", deep_lll_width(5));
+            experiment!("deeplll10", deep_lll_width(10));
 
-            experiment!("lll", lll);
+            // experiment!("lll", lll);
 
-            experiment!("potlll", pot_lll);
+            // experiment!("potlll", pot_lll);
 
-            experiment!("s2lll", s2_lll);
+            // experiment!("s2lll", s2_lll);
         }
     }
 }
@@ -87,12 +88,7 @@ fn experiment_unit<T: std::fmt::Debug>(
     b: ArrayView2<Rational>,
     result_path_str: &str,
     delta: Rational,
-    f: impl Fn(
-        Array2<Rational>,
-        Rational,
-        bool,
-        usize,
-    ) -> (Array2<Rational>, Array1<Rational>, Mu, Vec<T>, usize),
+    f: impl LLLFn<T>,
 ) -> std::io::Result<()> {
     let mut result_f = File::create(result_path_str)?;
     let (new_b, v, mu, hist, cnt) =
@@ -116,8 +112,9 @@ fn main() {
     }
     const CNT: usize = 1000;
 
-    //   for seed in 0..5 {
-    //     experiment_random(ndim, seed, CNT);
-    //   }
-    // }
+    for &ndim in &[10, 15, 20, 25, 30] {
+      for seed in 0..5 {
+        experiment_random(ndim, seed, CNT);
+      }
+    }
 }
