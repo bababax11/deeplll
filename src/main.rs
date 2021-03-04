@@ -105,7 +105,7 @@ fn experiment_unit<T: std::fmt::Debug>(
     Ok(())
 }
 
-const NDIMS: [usize; _] = [10, 15, 20, 25, 30, 35, 40];
+const NDIMS: [usize; 7] = [10, 15, 20, 25, 30, 35, 40];
 
 fn main() {
     for i in 0..5 {
