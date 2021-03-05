@@ -30,7 +30,7 @@ macro_rules! measure {
     }};
 }
 
-fn experiment_random(ndim: usize, seed: u64, cnt: usize) {
+fn experiment_random(ndim: usize, seed: u64, cnt: u64) {
     let b = gen_mat(ndim, seed, cnt);
     let path_str_base = format!("ndim{}seed{}cnt{}", ndim, seed, cnt);
     experiment_mat(b, &[ndim], &path_str_base);
@@ -112,7 +112,7 @@ fn main() {
         let mat_path_str = format!("matrices/svp/svpchallengedim40seed{}.txt", i);
         experiment_svp(&mat_path_str);
     }
-    const CNT: usize = 1000;
+    const CNT: u64 = 1000;
 
     for &ndim in &NDIMS {
       for seed in 0..5 {

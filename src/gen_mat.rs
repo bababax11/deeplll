@@ -3,7 +3,7 @@ use ndarray::prelude::*;
 use rand::Rng;
 use rug::Rational;
 
-pub fn gen_mat(ndim: usize, seed: u64, cnt: usize) -> Array2<Rational> {
+pub fn gen_mat(ndim: usize, seed: u64, cnt: u64) -> Array2<Rational> {
     use rand::SeedableRng;
     let mut rng = rand_xoshiro::Xoshiro256StarStar::seed_from_u64(seed);
 
