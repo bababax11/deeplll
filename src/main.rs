@@ -111,8 +111,8 @@ fn main() {
     const CNT: u64 = 1000;
 
     for &ndim in &NDIMS {
-      for seed in 0..5 {
-        experiment_random(ndim, seed, CNT);
-      }
+        for seed in 0..5 {
+            experiment_random(ndim, seed, CNT);
+        }
     }
 }
