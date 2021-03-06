@@ -1,10 +1,6 @@
-mod deeplll;
-mod gen_mat;
-mod parse;
-
-use deeplll::{deep_lll_width, lll, mu::Mu, pot_lll, s2_lll, LLLFn};
-use gen_mat::gen_mat;
-use parse::matrix_parse;
+use deeplll::deeplll::{deep_lll_width, lll, mu::Mu, pot_lll, s2_lll, LLLFn};
+use deeplll::gen_mat::gen_mat;
+use deeplll::parse::matrix_parse;
 
 use ndarray::prelude::*;
 use rug::Rational;
