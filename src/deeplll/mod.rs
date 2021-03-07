@@ -351,9 +351,9 @@ mod tests {
     use super::*;
 
     macro_rules! rat {
-    ($x: expr) => {Rational::from($x)};
-    ( $( $x:expr ),* ) => {Rational::from(($( $x ),*))};
-  }
+        ($x: expr) => {Rational::from($x)};
+        ( $( $x:expr ),* ) => {Rational::from(($( $x ),*))};
+    }
     #[test]
     fn gso_test() {
         let b = array![
