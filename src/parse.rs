@@ -2,9 +2,9 @@ use ndarray::prelude::*;
 use regex::Regex;
 use rug::Rational;
 use std::fs::File;
-use std::io;
 use std::io::prelude::*;
 use std::path::Path;
+use std::{fs, io};
 
 // A simple implementation of `% cat path`
 // `% cat path`のシンプルな実装
@@ -15,6 +15,20 @@ pub fn cat(path: &Path) -> io::Result<String> {
         Ok(_) => Ok(s),
         Err(e) => Err(e),
     }
+}
+
+pub fn read_dir<P: AsRef<Path>>(
+    path: P,
+    file_or_dir: impl Fn(&fs::FileType) -> bool,
+) -> io::Result<impl Iterator<Item = String>> {
+    Ok(fs::read_dir(path)?.filter_map(move |entry| {
+        let entry = entry.ok()?;
+        if file_or_dir(&entry.file_type().ok()?) {
+            Some(entry.file_name().to_string_lossy().into_owned())
+        } else {
+            None
+        }
+    }))
 }
 
 pub fn matrix_parse(path: &Path) -> Array2<Rational> {

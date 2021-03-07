@@ -427,7 +427,7 @@ mod tests {
             [rat!(-3), rat!(1), rat!(-2)],
             [rat!(2), rat!(-2), rat!(-2)],
         ];
-        let (b2, v2, mu2, hist, _) = deep_lll(b, rat!(1), false, 0);
+        let (b2, v2, mu2, hist, _) = deep_lll_all()(b, rat!(1), false, 0);
         assert_eq!(
             b2,
             array![
