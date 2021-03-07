@@ -123,9 +123,7 @@ impl<S, T> LLLFn<T> for S where
 
 #[inline]
 pub fn deep_lll_all() -> impl LLLFn<(usize, usize)> {
-    let _deep_lll_all =
-        |b, delta, verbose, verbose_count| deep_lll(b, delta, verbose, verbose_count, i32::MAX);
-    _deep_lll_all
+    |b, delta, verbose, verbose_count| deep_lll(b, delta, verbose, verbose_count, i32::MAX);
 }
 
 #[inline]
