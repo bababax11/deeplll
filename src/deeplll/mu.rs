@@ -21,7 +21,7 @@ impl std::ops::IndexMut<(usize, usize)> for Mu {
 impl Mu {
     pub fn new(n: usize) -> Self {
         Mu {
-            arr: vec![Rational::from(0); n * (n - 1) / 2],
+            arr: vec![Rational::new(); n * (n - 1) / 2],
         }
     }
 }

@@ -1,4 +1,4 @@
-use deeplll::deeplll::mat_to_str;
+use deeplll::deeplll::vector::mat_to_str;
 use deeplll::gen_mat::gen_mat;
 
 const NDIMS: [usize; 7] = [10, 15, 20, 25, 30, 35, 40];

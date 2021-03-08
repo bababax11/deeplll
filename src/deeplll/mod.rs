@@ -1,5 +1,4 @@
 pub mod vector;
-use std::fmt::Display;
 
 use vector::{dot, norm_squared};
 // mod matrix;
@@ -11,7 +10,7 @@ use rug::{ops::Pow, Rational};
 
 fn make_v(tmp_v: Array2<Rational>) -> Array1<Rational> {
     let n = tmp_v.nrows();
-    let mut v = Array::from(vec![Rational::default(); n]);
+    let mut v = Array::from(vec![Rational::new(); n]);
     for i in 0..n {
         v[i] = norm_squared(tmp_v.row(i));
     }
@@ -348,24 +347,6 @@ pub fn pot_lll(
     (b, v, mu, hist, cnt)
 }
 
-pub fn mat_to_str<T: Display>(mat: ArrayView2<T>) -> String {
-    if let [n, m] = *mat.shape() {
-        let mut s = String::new();
-
-        for i in 0..n {
-            for j in 0..m {
-                s += &format!("{},", &mat[[i, j]]);
-            }
-            s.pop();
-            s.push('\n');
-        }
-        s.pop();
-        s
-    } else {
-        unreachable!()
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -509,15 +490,5 @@ mod tests {
         assert_eq!(mu2[(1, 0)], rat!(-1, 6));
         assert_eq!(mu2[(1, 1)], rat!(0));
         assert_eq!(mu2[(1, 2)], rat!(18, 53));
-    }
-
-    #[test]
-    fn mat_to_str_test() {
-        let arr = array![
-            [rat!(3), rat!(1), rat!(-1)],
-            [rat!(-3, 2), rat!(-2), rat!(-3)]
-        ];
-        let s = mat_to_str(arr.view());
-        assert_eq!(&s, "3,1,-1\n-3/2,-2,-3");
     }
 }

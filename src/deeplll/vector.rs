@@ -4,10 +4,10 @@
 // };
 use ndarray::prelude::*;
 use rug::Rational;
-use std::ops;
+use std::{fmt::Display, ops};
 
 pub fn dot(a: ArrayView1<Rational>, b: ArrayView1<Rational>) -> Rational {
-    let mut result = Rational::default();
+    let mut result = Rational::new();
     for i in 0..a.len() {
         result += a[i].clone() * &b[i];
     }
@@ -39,7 +39,7 @@ pub fn norm_squared(a: ArrayView1<Rational>) -> Rational {
 
 pub fn add(a: ArrayView1<Rational>, b: ArrayView1<Rational>) -> Array1<Rational> {
     // assert_eq!(a.len(), b.len());
-    let mut result = Array::from(vec![Rational::default(); a.len()]);
+    let mut result = Array::from(vec![Rational::new(); a.len()]);
     for i in 0..a.len() {
         result[i] = a[i].clone() + &b[i];
     }
@@ -48,7 +48,7 @@ pub fn add(a: ArrayView1<Rational>, b: ArrayView1<Rational>) -> Array1<Rational>
 
 pub fn sub(a: ArrayView1<Rational>, b: ArrayView1<Rational>) -> Array1<Rational> {
     // assert_eq!(a.len(), b.len());
-    let mut result = Array::from(vec![Rational::default(); a.len()]);
+    let mut result = Array::from(vec![Rational::new(); a.len()]);
     for i in 0..a.len() {
         result[i] = a[i].clone() - &b[i];
     }
@@ -89,6 +89,59 @@ pub fn determinant(mut mat: Array2<Rational>) -> Rational {
     }
     let det_mat = mat.diag().fold(Rational::from(1), |prod, x| prod * x);
     det_mat
+}
+
+pub fn mat_to_str<T: Display>(mat: ArrayView2<T>) -> String {
+    if let [n, m] = *mat.shape() {
+        let mut s = String::new();
+
+        for i in 0..n {
+            for j in 0..m {
+                s += &format!("{},", &mat[[i, j]]);
+            }
+            s.pop();
+            s.push('\n');
+        }
+        s.pop();
+        s
+    } else {
+        unreachable!()
+    }
+}
+
+#[inline]
+pub fn max_row_norm_squared(mat: ArrayView2<Rational>) -> Rational {
+    let n = mat.nrows();
+    (0..n)
+        .map(|i| norm_squared(mat.row(i)))
+        .fold(Rational::new(), |m, v| m.max(v))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    macro_rules! rat {
+        ($x: expr) => {Rational::from($x)};
+        ( $( $x:expr ),* ) => {Rational::from(($( $x ),*))};
+    }
+
+    #[test]
+    fn mat_to_str_test() {
+        let arr = array![
+            [rat!(3), rat!(1), rat!(-1)],
+            [rat!(-3, 2), rat!(-2), rat!(-3)]
+        ];
+        let s = mat_to_str(arr.view());
+        assert_eq!(&s, "3,1,-1\n-3/2,-2,-3");
+    }
+
+    #[test]
+    fn max_row_norm_squared_test() {
+        let arr = array![[rat!(1), rat!(2), rat!(0)], [rat!(0), rat!(0), rat!(1)],];
+        let max_norm_2 = max_row_norm_squared(arr.view());
+        assert_eq!(max_norm_2, rat!(5));
+    }
 }
 
 // pub fn dot<T: Coefficient>(a: ArrayView1<T>, b: ArrayView1<T>) -> T {
