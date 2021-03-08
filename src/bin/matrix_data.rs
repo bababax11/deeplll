@@ -10,7 +10,7 @@ fn main() {
     for &ndim in &NDIMS {
         for seed in 0..5 {
             let mat = gen_mat(ndim, seed, CNT);
-            println!(";{};{};{}", ndim, seed, mat_to_str(mat.view()));
+            print!(";{};{};{}", ndim, seed, mat_to_str(mat.view()));
         }
     }
 }

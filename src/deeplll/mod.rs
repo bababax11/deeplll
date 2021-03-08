@@ -349,8 +349,9 @@ pub fn pot_lll(
 }
 
 pub fn mat_to_str<T: Display>(mat: ArrayView2<T>) -> String {
-    let mut s = String::new();
     if let [n, m] = *mat.shape() {
+        let mut s = String::new();
+
         for i in 0..n {
             for j in 0..m {
                 s += &format!("{},", &mat[[i, j]]);
