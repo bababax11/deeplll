@@ -9,7 +9,9 @@ const NDIMS: [usize; 7] = [10, 15, 20, 25, 30, 35, 40];
 
 fn main() {
     const CNT: u64 = 1000;
-    println!("type,ndim,seed,max_row_norm_squared,det,max_row_norm_squared_f64,det_f64");
+    println!(
+        "type,ndim,seed,max_row_norm_squared,det,max_row_norm_squared_f64,max_row_norm_f64,det_f64"
+    );
 
     for seed in 0..5 {
         let mat_path_str = format!("matrices/svp/svpchallengedim40seed{}.txt", seed);
@@ -20,13 +22,14 @@ fn main() {
             let max_norm_2 = max_row_norm_squared(part_mat);
             let det = determinant(part_mat.to_owned());
             println!(
-                "{},{},{},{},{},{:e},{:e}",
+                "{},{},{},{},{},{:e},{:e},{:e}",
                 "svp",
                 ndim,
                 seed,
                 max_norm_2,
                 det,
                 max_norm_2.to_f64(),
+                max_norm_2.to_f64().sqrt(),
                 det.to_f64()
             );
         }
@@ -38,13 +41,14 @@ fn main() {
             let max_norm_2 = max_row_norm_squared(mat.view());
             let det = determinant(mat);
             println!(
-                "{},{},{},{},{},{:e},{:e}",
+                "{},{},{},{},{},{:e},{:e},{:e}",
                 "random",
                 ndim,
                 seed,
                 max_norm_2,
                 det,
                 max_norm_2.to_f64(),
+                max_norm_2.to_f64().sqrt(),
                 det.to_f64()
             );
         }
