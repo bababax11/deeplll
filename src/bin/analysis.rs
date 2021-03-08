@@ -8,12 +8,12 @@ fn parse_sec_len_cnt(s: &str) -> (f32, u32, u32) {
     static RE_SEC: Lazy<Regex> = Lazy::new(|| Regex::new(r"(.[0-9])+ sec").unwrap());
     static RE_LEN_CNT: Lazy<Regex> =
         Lazy::new(|| Regex::new(r"\(hist.len, cnt\): \([0-9]+, [0-9]+\)").unwrap());
-    let sec = &RE_SEC.captures(s).unwrap()[0];
-    let mut sec = sec.split(' ');
-    let sec = if let Ok(sec) = sec.next().unwrap().parse::<f32>() {
+    let sec_str = &RE_SEC.captures(s).unwrap()[0];
+    let mut sec_splited = sec_str.split(' ');
+    let sec = if let Ok(sec) = sec_splited.next().unwrap().parse::<f32>() {
         sec
     } else {
-        sec.next().unwrap().parse::<f32>().unwrap()
+        sec_splited.next().unwrap().parse::<f32>().unwrap()
     };
 
     let len_cnt = &RE_LEN_CNT.captures(s).unwrap()[0];
