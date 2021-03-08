@@ -359,6 +359,7 @@ pub fn mat_to_str<T: Display>(mat: ArrayView2<T>) -> String {
             s.pop();
             s.push('\n');
         }
+        s.pop();
         s
     } else {
         unreachable!()
@@ -517,6 +518,6 @@ mod tests {
             [rat!(-3, 2), rat!(-2), rat!(-3)]
         ];
         let s = mat_to_str(arr.view());
-        assert_eq!(&s, "3,1,-1\n-3/2,-2,-3\n");
+        assert_eq!(&s, "3,1,-1\n-3/2,-2,-3");
     }
 }
