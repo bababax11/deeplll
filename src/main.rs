@@ -1,4 +1,4 @@
-use deeplll::deeplll::{deep_lll_width, lll, mu::Mu, pot_lll, s2_lll, LLLFn};
+use deeplll::deeplll::{deep_lll_width, lll, pot_lll, s2_lll, LLLFn};
 use deeplll::gen_mat::gen_mat;
 use deeplll::parse::matrix_parse;
 
