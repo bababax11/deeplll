@@ -1,8 +1,7 @@
-use deeplll::gen_mat::gen_mat;
 use deeplll::deeplll::mat_to_str;
+use deeplll::gen_mat::gen_mat;
 
 const NDIMS: [usize; 7] = [10, 15, 20, 25, 30, 35, 40];
-
 
 fn main() {
     const CNT: u64 = 1000;
