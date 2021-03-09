@@ -1,4 +1,5 @@
 use ndarray::prelude::*;
+use once_cell::sync::Lazy;
 use regex::Regex;
 use rug::Rational;
 use std::fs::File;
@@ -50,13 +51,48 @@ pub fn matrix_parse(path: &Path) -> Array2<Rational> {
     Array::from_shape_vec((nrows, rat_vec.len() / nrows), rat_vec).unwrap()
 }
 
+pub fn parse_sec_len_cnt(s: &str) -> (f32, u32, u32) {
+    static RE_SEC: Lazy<Regex> = Lazy::new(|| Regex::new(r"(.[0-9])+ sec").unwrap());
+    static RE_LEN_CNT: Lazy<Regex> =
+        Lazy::new(|| Regex::new(r"\(hist.len, cnt\): \([0-9]+, [0-9]+\)").unwrap());
+    let sec_str = &RE_SEC.captures(s).unwrap()[0];
+    let mut sec_splited = sec_str.split(' ');
+    let sec = if let Ok(sec) = sec_splited.next().unwrap().parse::<f32>() {
+        sec
+    } else {
+        sec_splited.next().unwrap().parse::<f32>().unwrap()
+    };
+
+    let len_cnt = &RE_LEN_CNT.captures(s).unwrap()[0];
+
+    static RE_TUP: Lazy<Regex> = Lazy::new(|| Regex::new(r"[0-9]+").unwrap());
+    let len_cnt = &mut RE_TUP.captures_iter(len_cnt);
+    let (len, cnt) = (&len_cnt.next().unwrap()[0], &len_cnt.next().unwrap()[0]);
+    (
+        sec,
+        len.parse::<u32>().unwrap(),
+        cnt.parse::<u32>().unwrap(),
+    )
+}
+
 #[cfg(test)]
 mod tests {
+    use average::assert_almost_eq;
+
     use super::*;
     #[test]
     fn matrix_parse_test() {
         let path = Path::new("matrices/svp/svpchallengedim40seed0.txt");
         let mat = matrix_parse(path);
         dbg!(mat);
+    }
+    #[test]
+    fn parse_sec_len_cnt_test() {
+        let s = cat("results/deeplll/ndim10seed0cnt1000dim10delta0.98999995.txt".as_ref()).unwrap();
+        let (sec, len, cnt) = parse_sec_len_cnt(&s);
+
+        assert_almost_eq!(sec, 3.951, 1e-5);
+        assert_eq!(len, 486);
+        assert_eq!(cnt, 6316);
     }
 }
