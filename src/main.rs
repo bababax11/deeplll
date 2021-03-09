@@ -36,10 +36,10 @@ fn experiment_svp(mat_path_str: &str) {
     let path = Path::new(mat_path_str);
     let b = matrix_parse(path);
     let path_str_base = mat_path_str
-        .split("/")
+        .split('/')
         .last()
         .unwrap()
-        .split(".")
+        .split('.')
         .next()
         .unwrap();
     experiment_mat(b, &NDIMS, path_str_base);
